@@ -127,11 +127,117 @@ INTP | Jack of all trades | I use Arch BTW
 
 **如何贡献代码？**
 
-通常的情况下，对 [factory 目录](https://github.com/Johnshall/Shadowrocket-ADBlock-Rules-Forever/tree/build/factory) 下的 3 个 `manual_*.txt` 文件做对应修改即可。**Pull requests 请发送至 build 分支。**
+通常的情况下，对 [factory 目录](https://github.com/Johnshall/Shadowrocket-ADBlock-Rules-Forever/tree/build/factory) 下的若干个 `manual_*.txt` 文件做对应修改即可。**Pull requests 请发送至 build 分支。**
 
-**如何拥有自己的定制化规则？**
+---
 
-点击右上角 Fork，取消勾选`Copy the release branch only`，在自己的仓库开启 Actions 功能即可。
+## 如何定制属于你自己的规则（Fork 自用版）
+
+想在上游规则基础上加入自己的分流/拦截规则，并每天自动构建，按下面的步骤来。
+
+### 第一步：Fork 仓库
+
+1. 点击本仓库右上角 **Fork**；
+2. **务必取消勾选 `Copy the release branch only`**，否则你拿不到带构建脚本的 `build` 分支；
+3. Fork 完成后，进入你自己的仓库（形如 `你的用户名/Shadowrocket-ADBlock-Rules-Forever`）。
+
+### 第二步：把默认分支设为 `build`
+
+GitHub 只会到**默认分支**里去找定时任务（workflow）。Fork 出来的默认分支通常是 `release`（里面没有构建脚本），所以必须改：
+
+> 你的仓库 → **Settings** → **General** → **Default branch** → 改成 `build` → Update。
+
+> ⚠️ 这一步不做，下面的定时构建永远不会触发。
+
+### 第三步：给 workflow 写权限
+
+Fork 仓库默认给 Actions 的权限是**只读**，会导致构建最后一步把成品 push 回仓库时失败（403）。
+
+> 你的仓库 → **Settings** → **Actions** → **General** → 滚到底部 *Workflow permissions* → 选 **Read and write permissions** → Save。
+
+### 第四步：启用 Actions（fork 必做的一次性操作）
+
+GitHub 出于安全考虑，fork 仓库的 workflow 默认**不会自动运行**，需要你手动确认一次：
+
+1. 进入你的仓库 → **Actions** 标签页；
+2. 会看到黄色横幅 *"Workflows aren't being run on this forked repository"*；
+3. 点击绿色按钮 **`I understand my workflows, go ahead and enable them`**；
+4. （此时 workflow 仍是 `disabled_fork` 状态）再点左侧 *Build Shadowrocket Rules* → 右上角 **⋯** → **Enable workflow**。
+
+> 完成后，Actions 页面能看到 *Build Shadowrocket Rules* 处于 active 状态。
+
+### 第五步：添加你自己的规则
+
+这是最核心的一步。编辑 [`factory/`](https://github.com/Johnshall/Shadowrocket-ADBlock-Rules-Forever/tree/build/factory) 目录下的 `manual_*.txt` 文件，把规则追加进去即可（可以直接在网页上编辑，也可以 clone 到本地改）。**不需要写规则类型前缀，构建脚本会自动判断。**
+
+| 文件 | 规则会被应用为 | 适合放什么 |
+| --- | --- | --- |
+| `manual_reject.txt` | `REJECT`（拦截） | 广告、追踪、想屏蔽的域名 |
+| `manual_direct.txt` | `DIRECT`（直连） | 国内网站、公司内网、想直连的 App |
+| `manual_proxy.txt` | `Proxy`（代理） | 被墙的网站、必须走代理才能用的 App |
+| `manual_gfwlist.txt` | `Proxy`（代理） | 追加到 GFWList 黑名单里 |
+| `manual_gfwlist_excludes.txt` | （从黑名单排除） | 想从 GFWList 里移除的域名 |
+
+**书写格式（极简，脚本会自动识别）：**
+
+```
+# 以 # 开头是注释，方便分组
+example.com            # 纯域名 → 自动变 DOMAIN-SUFFIX,example.com
+1.2.3.4                # IPv4 → 自动补成 IP-CIDR,1.2.3.4/32
+2001:db8::1            # IPv6 → 自动补成 IP-CIDR,2001:db8::1/128
+google                 # 纯字母关键字 → 自动变 DOMAIN-KEYWORD,google
+```
+
+改完提交（commit 到 `build` 分支）。因为 workflow 监听了 `build` 分支的 push，**只要不是改 `.md` 或 `LICENSE`，提交后会自动触发一次构建**。
+
+### 第六步：手动触发一次构建验证
+
+你的仓库 → **Actions** → *Build Shadowrocket Rules* → **Run workflow** → 选 `build` 分支 → 运行。等 1～2 分钟跑完变绿，说明你的规则已经生成到 `.conf` 文件里了。
+
+### 第七步：在 Shadowrocket 里导入你自己的规则
+
+成品在 `build` 分支根目录，把订阅地址里的 `Johnshall` 换成你的用户名即可：
+
+```
+https://raw.githubusercontent.com/你的用户名/Shadowrocket-ADBlock-Rules-Forever/build/sr_adb.conf
+```
+
+国内访问 `raw.githubusercontent.com` 偶尔慢，可改用 jsDelivr 加速：
+
+```
+https://cdn.jsdelivr.net/gh/你的用户名/Shadowrocket-ADBlock-Rules-Forever@build/sr_adb.conf
+```
+
+> 💡 **选哪个 .conf？** 不同配置文件分流策略不同，你的自定义规则会按类型进入相应文件：
+> - `manual_proxy`（你加的代理规则）→ 进 `sr_adb`、`sr_cnip_ad`、`sr_top500_banlist_ad`、`sr_top500_whitelist_ad` 等白名单/黑名单类配置；
+> - `manual_direct`（你加的直连规则）→ 进 `sr_adb`、`sr_top500_whitelist*`；
+> - `manual_reject`（你加的拦截规则）→ 几乎所有带广告过滤的配置。
+>
+> **推荐用 `sr_adb.conf`**（白名单 + 拦广告），自定义的代理和直连规则都在里面。
+
+Shadowrocket → 配置 → 右上角 `+` → 粘贴上面的 URL → 类型选 **Conf** → 下载 → 设为当前配置。
+
+### 日常维护
+
+- **每天自动构建**：北京时间早 7 点自动跑一次，同步最新的上游广告/分流源，你的规则会一直保留。
+- **想再加规则**：继续编辑 `manual_*.txt` 并提交即可，无需做别的。
+- **想同步上游的改进**：你的仓库首页点 **Sync fork**，或在本地：
+  ```bash
+  git remote add upstream https://github.com/Johnshall/Shadowrocket-ADBlock-Rules-Forever.git
+  git fetch upstream
+  git merge upstream/build
+  git push
+  ```
+  你的 `manual_*.txt` 改动不会丢（除非上游改了同一行，手动解决冲突即可）。
+
+### 排错速查
+
+| 现象 | 原因 / 解决 |
+| --- | --- |
+| Actions 里根本没有 *Build Shadowrocket Rules* | 默认分支不是 `build`（第二步），或没启用 Actions（第四步） |
+| workflow 状态是 `disabled_fork` | 第四步没做完，去 Actions 页手动 enable |
+| 构建在 `Deploy` 步骤报 403 / Permission denied | 第三步没做，Workflow 权限是只读 |
+| 规则没出现在某个 `.conf` 里 | 该配置文件本就不包含对应类型，换 `sr_adb.conf`（见第七步提示） |
 
 
 ## 捐助
