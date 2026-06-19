@@ -458,3 +458,70 @@ mc-heads.net
 # 越狱下载源加速
 apt.thebigboss.org
 repo.chariz.com
+
+# ==================== 富途证券（富途牛牛/moomoo）强制代理 ====================
+# 交易/行情/下单接口必须走代理，否则无法下单
+# 来源：blackmatrix7/ios_rule_script#1687 + 官方域名
+# 核心主站与品牌域
+futuholdings.com
+futuhk.com
+futunn.com
+moomoo.com
+futuie.com
+futubull.com
+futu.com
+futu.cn
+futu.link
+# 交易/行情/信托/ESOP 业务域
+fututrade.com
+futufin.com
+futuesop.com
+fututrustee.com
+moomootrustee.com
+moomooequity.com
+moomoobull.com
+# 区域实体与 App 域
+futuhkapp.com
+futuhk2.com
+futuinc.com
+futuau.com
+futuhn.com
+futuniuniu.com
+futubull.cn
+# 基础设施/CDN
+futustatic.com
+futuchain.com
+# 编号备用根域（行情/交易后端可能轮询）
+futu0.com
+futu1.com
+futu2.com
+futu3.com
+futu4.com
+futu5.com
+futu6.com
+futu7.com
+futu8.com
+futu9.com
+
+# ==================== 长桥证券（Longbridge/LongPort）强制代理 ====================
+# 交易/行情/下单接口必须走代理，否则无法下单
+# 来源：官方文档 + blackmatrix7/ios_rule_script#1687
+# 主品牌/官网/下载
+longbridge.com
+longbridge.global
+longbridge.cn
+longbridge.cloud
+longbridgehk.com
+longbridgesg.com
+# App / OpenAPI 行情交易接口
+longportapp.com
+longbridgeapp.com
+# LongPort Whale（B 端券商 SaaS）
+longportwhale.com
+longport.cn
+longportio.com
+# 基础设施 / CDN / 静态资源
+lbkrs.com
+lbkrs.net
+lbctrl.com
+lbctrl.net

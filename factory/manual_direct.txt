@@ -119,3 +119,133 @@ chillyroom.com
 
 # IHG Internet Access
 portal.linkbroad.com
+
+# ==================== 哔哩哔哩 B站全家桶 直连 ====================
+# 来源：v2fly/domain-list-community（bilibili / bilibili-cdn / bilibili-game）
+# 主站 / API / 漫画 / 社区 / 短链
+bilibili.com
+bilibili.cn
+bilibili.net
+bilibili.cc
+biliapi.com
+biliapi.net
+b23.tv
+bigfun.cn
+bigfunapp.cn
+bili22.cn
+bili2233.cn
+bili23.cn
+bili33.cn
+bilicomic.com
+bilicomics.com
+bilibilipay.cn
+bilibilipay.com
+biligo.com
+acg.tv
+acgvideo.com
+animetamashi.cn
+animetamashi.com
+anitama.cn
+anitama.net
+huasheng.cn
+im9.com
+yo9.com
+maoer.com
+missevan.com
+# CDN / 视频 / 图片 / 静态资源
+bilivideo.com
+bilivideo.cn
+bilivideo.net
+hdslb.com
+hdslb.org
+biliimg.com
+bilicdn1.com
+bilicdn2.com
+bilicdn3.com
+bilicdn4.com
+bilicdn5.com
+maoercdn.com
+mincdn.com
+# 游戏
+biligame.com
+biligame.net
+biligame.co
+bilibiligame.cn
+bilibiligame.net
+bilibiligame.co
+
+# ==================== 招商银行 CMB 直连 ====================
+# 来源：v2fly/domain-list-community（cmb）
+cmbchina.com
+cmbchina.cn
+cmbchina.biz
+cmbimg.com
+cmbimg.cn
+cmburl.cn
+cmbt.cn
+cmbuat.com
+cmfchina.com
+cmfunds.cn
+cmf.biz
+cmf.ltd
+cmb-leasing.com
+8008205555.cn
+8008205555.com
+cignacmb.com
+cignacmb-ipmi.com
+cignacmbamc.com
+test-cignacmb.com
+joying.com
+
+# ==================== 中国建设银行 CCB 直连 ====================
+# 来源：v2fly/domain-list-community（ccb）+ LM-Firefly/Rules
+ccb.com
+ccb.cn
+ccb.com.cn
+ccb-life.com.cn
+ccbcos.com
+ccbfund.cn
+ccbfund.com
+ccbfund.com.cn
+ccbfutures.cn
+ccbfutures.com
+ccbhome.cn
+ccbhome.net
+ccbleasing.com
+ccblife-test.com.cn
+ccbtrust.com.cn
+ccbxt.com
+
+# ==================== 中国银行 BOC 直连 ====================
+# 来源：v2fly/domain-list-community（boc）
+boc.cn
+bank-of-china.com
+bankofchina.com
+bocamchina.com
+bocaviation.com
+boccfc.cc
+boccfc.cn
+bocgi.com
+bocgins.com
+bocichina.cn
+bocichina.com
+bocichina.com.cn
+bocifunds.cn
+bocifunds.com
+bocifunds.com.cn
+bocigroup.com
+bocim.com
+bocservices.com.cn
+bocfullertonbank.com
+
+# ==================== Texas Poker 德州扑克 直连 ====================
+# 公开资料少，按常见发行商覆盖。请确认你玩的是哪个，可按需精简。
+# 候选一：博雅德州扑克 Boyaa（中文圈最常见）
+boyaa.com
+boyaa.com.cn
+boyaa.tv
+boyaa.net
+boyaainteractive.com
+# 候选二：KamaGames Pokerist（海外版 Texas Poker）
+kamagames.com
+pokerist.com
