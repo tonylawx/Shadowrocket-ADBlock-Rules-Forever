@@ -217,6 +217,45 @@ https://cdn.jsdelivr.net/gh/你的用户名/Shadowrocket-ADBlock-Rules-Forever@b
 
 Shadowrocket → 配置 → 右上角 `+` → 粘贴上面的 URL → 类型选 **Conf** → 下载 → 设为当前配置。
 
+### 第八步（可选）：直接扫码导入 —— 二维码是自动生成的
+
+本仓库的构建流程**已经内置了二维码自动生成**：每次构建完成后，会对每个 `.conf` 规则文件生成一张订阅二维码 PNG，覆盖到 `figure/` 目录，并随构建一起提交。**这意味着你 Fork 之后，README 里那些二维码扫出来的就是你自己的规则地址，不用任何手动处理。**
+
+**工作原理：**
+
+构建流程里有一步 `Generate QR codes & update README URLs`（由 [`factory/generate_qr.py`](https://github.com/Johnshall/Shadowrocket-ADBlock-Rules-Forever/tree/build/factory/generate_qr.py) 完成），它会做两件事：
+
+1. **生成二维码**：对下列 13 个规则文件，各生成一张二维码 PNG，编码的订阅地址形如 `https://raw.githubusercontent.com/{你的用户名}/{仓库名}/build/{规则名}.conf`。其中 `{你的用户名}` 和 `{仓库名}` 是构建时从当前仓库**自动读取**的，所以 Fork 者无需改任何代码，二维码天然指向自己的仓库。
+
+   | 二维码文件 | 对应规则 | 用途 |
+   | --- | --- | --- |
+   | `figure/sr_top500_banlist_ad.png` | 黑名单 + 去广告 | 被墙网站走代理 |
+   | `figure/sr_top500_whitelist_ad.png` | 白名单 + 去广告 | top500 直连、其余代理 |
+   | `figure/sr_cnip_ad.png` | 国内外划分 + 去广告 | 中国直连、外国代理 |
+   | `figure/sr_direct_banad.png` | 全局直连 + 去广告 | 当全局去广告工具 |
+   | `figure/sr_proxy_banad.png` | 全局代理 + 去广告 | 全局翻墙 + 去广告 |
+   | `figure/sr_backcn_ad.png` | 回国规则 + 去广告 | 海外华侨回国用 |
+   | `figure/sr_ad_only.png` | 仅去广告 | 与其它规则联用 |
+   | `figure/lazy.png` / `figure/lazy_group.png` | 懒人配置 | 开箱即用 |
+   | 另 4 个（无 `_ad` 后缀） | 同上但不带广告过滤 | 浏览器已自带去广告时用 |
+
+   > `figure/guide.png`（规则选择指南示意图）和 `sr_adb.conf` 不会被自动处理——前者是说明图不是二维码，后者没有对应的 README 章节。
+
+2. **替换 README 里的地址**：把 README 中所有原作者的 `johnshall.github.io/Shadowrocket-ADBlock-Rules-Forever` 链接，替换成你自己的 `你的用户名.github.io/仓库名`。同时把二维码图片链接从绝对地址改成相对路径（`figure/xxx.png`），这样别人看你的 README 时，点规则地址、扫二维码都是指向**你**的仓库。
+
+**怎么扫码导入：**
+
+- **方式一（推荐）**：打开你 Fork 仓库的 README 页面（`https://github.com/你的用户名/Shadowrocket-ADBlock-Rules-Forever`），滚到对应规则章节，直接用 Shadowrocket 扫描那张二维码。
+- **方式二**：单独打开某张二维码图片，例如：
+  ```
+  https://github.com/你的用户名/Shadowrocket-ADBlock-Rules-Forever/raw/build/figure/sr_ad_only.png
+  ```
+  手机显示这张图，再用 Shadowrocket 扫码。
+
+> 💡 二维码里编码的是 `raw.githubusercontent.com` 直链（不依赖 GitHub Pages，永远可用）。每次构建后二维码内容会跟着更新——但因为你的订阅地址是固定的，**Shadowrocket 里只需配置/扫码一次，以后每次构建自动刷新内容**，无需重新导入。
+
+> ⚠️ **关于 GitHub Pages**：替换后的 README 规则地址用的是 `你的用户名.github.io/仓库名` 形式。如果你没有在仓库 Settings → Pages 里开启 Pages 服务，这个文字地址会 404；但这**不影响扫码导入**（二维码用的是 raw 直链）。需要文字链接也可点的话，去 Settings → Pages 把 Source 设为 `build` 分支即可。
+
 ### 日常维护
 
 - **每天自动构建**：北京时间早 7 点自动跑一次，同步最新的上游广告/分流源，你的规则会一直保留。
@@ -237,7 +276,10 @@ Shadowrocket → 配置 → 右上角 `+` → 粘贴上面的 URL → 类型选 
 | Actions 里根本没有 *Build Shadowrocket Rules* | 默认分支不是 `build`（第二步），或没启用 Actions（第四步） |
 | workflow 状态是 `disabled_fork` | 第四步没做完，去 Actions 页手动 enable |
 | 构建在 `Deploy` 步骤报 403 / Permission denied | 第三步没做，Workflow 权限是只读 |
+| 构建在 `Generate QR codes` 步骤失败 | `requirements.txt` 里的 `qrcode`/`pillow` 没装上；该步骤失败不影响规则本身，仅二维码不更新，可重跑 workflow |
 | 规则没出现在某个 `.conf` 里 | 该配置文件本就不包含对应类型，换 `sr_adb.conf`（见第七步提示） |
+| 扫码后地址仍指向原作者 `Johnshall` | 那是旧的二维码缓存；确认构建跑过 `Generate QR codes` 步骤，刷新图片后再扫 |
+| README 里规则地址文字链接 404 | 用的是 `你的用户名.github.io` 形式，需在 Settings → Pages 开启 Pages 服务（扫码导入不受影响） |
 
 
 ## 捐助
