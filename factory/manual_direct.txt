@@ -197,6 +197,11 @@ cignacmbamc.com
 test-cignacmb.com
 joying.com
 
+# ==================== 招商永隆银行 WLB 直连 ====================
+cmbwinglungbank.com
+cmbwlb.com
+winglungbank.com
+
 # ==================== 中国建设银行 CCB 直连 ====================
 # 来源：v2fly/domain-list-community（ccb）+ LM-Firefly/Rules
 ccb.com
@@ -238,6 +243,10 @@ bocim.com
 bocservices.com.cn
 bocfullertonbank.com
 
+# ==================== 香港中银 BOCHK 直连 ====================
+bochk.com
+bochk.com.hk
+
 # ==================== Texas Poker 德州扑克 直连 ====================
 # 公开资料少，按常见发行商覆盖。请确认你玩的是哪个，可按需精简。
 # 候选一：博雅德州扑克 Boyaa（中文圈最常见）
@@ -249,3 +258,10 @@ boyaainteractive.com
 # 候选二：KamaGames Pokerist（海外版 Texas Poker）
 kamagames.com
 pokerist.com
+
+# 滑呗
+fenxuekeji.com
+
+# 转转
+zhuanzhuan.com
+
