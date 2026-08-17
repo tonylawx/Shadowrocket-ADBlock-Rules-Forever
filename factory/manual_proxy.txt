@@ -525,3 +525,8 @@ lbkrs.com
 lbkrs.net
 lbctrl.com
 lbctrl.net
+
+# ==================== Gemini / Google AI 强制代理 ====================
+gemini.google.com
+aistudio.google.com
+generativelanguage.googleapis.com
