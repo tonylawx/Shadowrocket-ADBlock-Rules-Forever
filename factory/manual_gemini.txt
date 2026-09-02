@@ -1,0 +1,20 @@
+# 走 "Gemini" 策略组的域名(名称含 Gemini 的专线节点)
+# 这些是 Google AI 的 API 接口,对出口 IP 风控严格,普通节点会被拒(429/403),
+# 必须走机场的 Gemini 优化节点。
+#
+# 注意:gemini.google.com(网页版/App)不要放这里!
+# 消费级网页对美国机房 IP 反而有风控,应走普通 Proxy(见 manual_proxy.txt)。
+
+# Antigravity IDE(Google AI 编程工具)后端
+daily-cloudcode-pa.googleapis.com
+cloudcode-pa.googleapis.com
+antigravity.google
+cloudaicompanion.googleapis.com
+
+# Gemini API / AI Studio
+generativelanguage.googleapis.com
+alkalimakersuite-pa.clients6.google.com
+aistudio.google.com
+makersuite.google.com
+ai.google.dev
+proactivebackend-pa.googleapis.com

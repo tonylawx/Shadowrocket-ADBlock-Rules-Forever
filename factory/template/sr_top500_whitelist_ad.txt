@@ -10,6 +10,7 @@
 {{ad}}
 {{manual_reject}}
 
+{{manual_gemini}}
 {{manual_direct}}
 {{manual_proxy}}
 

@@ -175,8 +175,14 @@ GitHub 出于安全考虑，fork 仓库的 workflow 默认**不会自动运行**
 | `manual_reject.txt` | `REJECT`（拦截） | 广告、追踪、想屏蔽的域名 |
 | `manual_direct.txt` | `DIRECT`（直连） | 国内网站、公司内网、想直连的 App |
 | `manual_proxy.txt` | `Proxy`（代理） | 被墙的网站、必须走代理才能用的 App |
+| `manual_gemini.txt` | `Gemini`（策略组） | Google AI 的 API 接口（Gemini API、Antigravity、AI Studio），走名称含 "Gemini" 的专线节点 |
 | `manual_gfwlist.txt` | `Proxy`（代理） | 追加到 GFWList 黑名单里 |
 | `manual_gfwlist_excludes.txt` | （从黑名单排除） | 想从 GFWList 里移除的域名 |
+
+**关于 `Gemini` 策略组**（所有含代理规则的配置均已内置）：
+
+- Google 对 AI 接口（`generativelanguage.googleapis.com`、Antigravity 的 `daily-cloudcode-pa.googleapis.com` 等）的出口 IP 风控很严，普通节点常被拒；而**网页版** `gemini.google.com` 恰恰相反，家宽类普通节点没问题、美国机房 IP 反而容易被风控。因此 API 域名放 `manual_gemini.txt` 走专用组，网页版留在 `manual_proxy.txt` 走普通代理。
+- 策略组定义为 `url-test` + `policy-regex-filter=Gemini`：自动从你的订阅里筛出名称含 "Gemini" 的节点并选延迟最低的，**无需手动干预**。机场没有此类节点时，可在 Shadowrocket → 配置 → ℹ️ → 代理分组 中自行调整该组的筛选正则（改成 `美国|US` 等）。
 
 **书写格式（极简，脚本会自动识别）：**
 

@@ -68,6 +68,17 @@ values['ad'] = getRulesStringFromFile('resultant/ad.list', 'Reject')
 values['manual_direct'] = getRulesStringFromFile('manual_direct.txt', 'Direct')
 values['manual_proxy']  = getRulesStringFromFile('manual_proxy.txt', 'Proxy')
 values['manual_reject'] = getRulesStringFromFile('manual_reject.txt', 'Reject')
+values['manual_gemini'] = getRulesStringFromFile('manual_gemini.txt', 'Gemini')
+
+
+# Gemini 策略组:自动选取订阅中名称含 "Gemini" 的专线节点(延迟最低者)。
+# 仅注入到模板中引用了 {{manual_gemini}} 的配置。
+GEMINI_PROXY_GROUP = '''[Proxy Group]
+# Gemini/AI 专用分组:自动选择名称含 "Gemini" 的节点(API 对普通节点 IP 有风控)。
+# 可在 Shadowrocket 的 [代理分组] 中查看和手动调整。
+Gemini = url-test,url=http://www.gstatic.com/generate_204,interval=600,tolerance=0,timeout=5,select=0,policy-regex-filter=Gemini
+
+[Rule]'''
 
 values['gfwlist'] = getRulesStringFromFile('resultant/gfw.list', 'Proxy') \
                   + getRulesStringFromFile('manual_gfwlist.txt', 'Proxy')
@@ -79,7 +90,10 @@ for conf_name in confs_names:
     template = file_template.read()
   
     if conf_name != 'sr_ad_only':
-        template = str_head + template + str_foot
+        head = str_head
+        if '{{manual_gemini}}' in template:
+            head = head.replace('[Rule]', GEMINI_PROXY_GROUP)
+        template = head + template + str_foot
 
     file_output = open('../'+conf_name+'.conf', 'w', encoding='utf-8')
 

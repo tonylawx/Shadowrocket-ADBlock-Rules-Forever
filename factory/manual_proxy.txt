@@ -526,7 +526,7 @@ lbkrs.net
 lbctrl.com
 lbctrl.net
 
-# ==================== Gemini / Google AI 强制代理 ====================
+# ==================== Gemini 网页版 ====================
+# 网页版走普通代理即可(台湾等家宽节点对消费级网页友好)。
+# API 接口(generativelanguage 等)已移至 manual_gemini.txt,走 Gemini 专用策略组。
 gemini.google.com
-aistudio.google.com
-generativelanguage.googleapis.com

@@ -5,6 +5,7 @@
 
 
 {{manual_reject}}
+{{manual_gemini}}
 
 {{ad}}
 
