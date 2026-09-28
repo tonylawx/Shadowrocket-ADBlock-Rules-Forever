@@ -7,36 +7,71 @@ RULE_END = "# END CUSTOM APPLE INTELLIGENCE / CHATGPT REGION FIX"
 GROUP_START = "# BEGIN CUSTOM APPLE INTELLIGENCE PROXY GROUP"
 GROUP_END = "# END CUSTOM APPLE INTELLIGENCE PROXY GROUP"
 
+# Keep this list intentionally focused on Apple Intelligence / Siri / ChatGPT.
+# Sources cross-checked against current community Apple Intelligence and OpenAI rule sets.
 APPLE_RULES = [
     "DOMAIN-SUFFIX,gateway.icloud.com,{policy}",
-    "DOMAIN,apple-relay.apple.com,{policy}",
-    "DOMAIN,apple-relay.fastly-edge.com,{policy}",
-    "DOMAIN,apple-relay.cloudflare.com,{policy}",
-    "DOMAIN,apple-relay.akamaized.net,{policy}",
-    "DOMAIN,apple-relay.mask.apple-dns.net,{policy}",
     "DOMAIN,guzzoni.apple.com,{policy}",
-    "DOMAIN,cp4.cloudflare.com,{policy}",
-    "DOMAIN,gspe1-ssl.ls.apple.com,{policy}",
+    "DOMAIN,identity.apple.com,{policy}",
+    "DOMAIN,appleid.cdn-apple.com,{policy}",
+
+    # Apple Intelligence / Private Cloud Compute / relay path
+    "DOMAIN,mask-api.fe.apple-dns.net,{policy}",
+    "DOMAIN,mask-api.icloud.com,{policy}",
+    "DOMAIN,mask-t.apple-dns.net,{policy}",
+    "DOMAIN,mask.apple-dns.net,{policy}",
+    "DOMAIN-SUFFIX,mask-h2.icloud.com,{policy}",
+    "DOMAIN-SUFFIX,mask.icloud.com,{policy}",
+    "DOMAIN-SUFFIX,apple-relay.apple.com,{policy}",
+    "DOMAIN-SUFFIX,apple-relay.fastly-edge.com,{policy}",
+    "DOMAIN-SUFFIX,apple-relay.cloudflare.com,{policy}",
+    "DOMAIN-SUFFIX,apple-relay.akamaized.net,{policy}",
+    "DOMAIN-SUFFIX,apple-relay.mask.apple-dns.net,{policy}",
+    "DOMAIN-KEYWORD,apple-relay,{policy}",
+
+    # Siri / location capability checks used before ChatGPT hand-off
+    "DOMAIN-SUFFIX,cp4.cloudflare.com,{policy}",
+    "DOMAIN-SUFFIX,gspe1-ssl.ls.apple.com,{policy}",
+    "DOMAIN-SUFFIX,ls.apple.com,{policy}",
     "DOMAIN-SUFFIX,smoot.apple.com,{policy}",
+    "DOMAIN-KEYWORD,siri,{policy}",
+
+    # Apple Intelligence resources / CloudKit
+    "DOMAIN-SUFFIX,apple-cloudkit.com,{policy}",
     "DOMAIN-SUFFIX,apps.mzstatic.com,{policy}",
     "DOMAIN-SUFFIX,aapps.mzstatic.com,{policy}",
-    "DOMAIN-WILDCARD,*mask*.apple-dns.net,{policy}",
-    "DOMAIN-WILDCARD,*mask*.icloud.com,{policy}",
-    "DOMAIN-WILDCARD,*siri*.apple.com,{policy}",
 ]
 
 OPENAI_RULES = [
+    # Core OpenAI / ChatGPT
     "DOMAIN-SUFFIX,chat.com,{policy}",
     "DOMAIN-SUFFIX,chatgpt.com,{policy}",
+    "DOMAIN-SUFFIX,chatgpt.site,{policy}",
     "DOMAIN-SUFFIX,openai.com,{policy}",
     "DOMAIN-SUFFIX,oaistatic.com,{policy}",
     "DOMAIN-SUFFIX,oaiusercontent.com,{policy}",
+    "DOMAIN-SUFFIX,oaistatsig.com,{policy}",
     "DOMAIN-SUFFIX,livekit.cloud,{policy}",
     "DOMAIN-SUFFIX,sora.com,{policy}",
+
+    # Feature flags / auth / CDN / realtime endpoints that do not end in openai.com
     "DOMAIN,api.statsig.com,{policy}",
     "DOMAIN,api-iam.intercom.io,{policy}",
     "DOMAIN,o33249.ingest.sentry.io,{policy}",
+    "DOMAIN,o33249.ingest.us.sentry.io,{policy}",
+    "DOMAIN,openai.com.cdn.cloudflare.net,{policy}",
+    "DOMAIN,openai-api.arkoselabs.com,{policy}",
     "DOMAIN,openaiapi-site.azureedge.net,{policy}",
+    "DOMAIN,openaiassets.blob.core.windows.net,{policy}",
+    "DOMAIN,openaicom.imgix.net,{policy}",
+    "DOMAIN,openaicomproductionae4b.blob.core.windows.net,{policy}",
+    "DOMAIN,production-openaicom-storage.azureedge.net,{policy}",
+
+    # Dynamic Azure WebPubSub / Azure Front Door hostnames
+    "AND,((DOMAIN-KEYWORD,chatgpt-async-webps-prod-),(DOMAIN-SUFFIX,webpubsub.azure.com)),{policy}",
+    "AND,((DOMAIN-KEYWORD,openaicom-api-),(DOMAIN-SUFFIX,azurefd.net)),{policy}",
+
+    # Catch future OpenAI-owned dynamic hostnames without proxying all Azure/CDN traffic.
     "DOMAIN-KEYWORD,openaiapi,{policy}",
     "DOMAIN-KEYWORD,openaicom,{policy}",
 ]
@@ -46,7 +81,8 @@ def rules_block(policy: str) -> str:
     lines = [
         RULE_START,
         "# Apple Intelligence / Writing Tools / Siri -> ChatGPT.",
-        "# Keep this block above the generic AI and Apple DIRECT rules.",
+        "# Keep this block above generic AI and Apple DIRECT rules.",
+        "# Expanded for iOS 27 region/capability checks and dynamic OpenAI backends.",
     ]
     for rule in APPLE_RULES + OPENAI_RULES:
         lines.append(rule.format(policy=policy))
@@ -81,7 +117,6 @@ def patch_group(path: str) -> None:
     text = p.read_text(encoding="utf-8")
     text = strip_block(text, GROUP_START, GROUP_END)
 
-    # Restore the upstream generic AI group if an older version of this patch changed it.
     text = re.sub(
         r"^AI = select,.*$",
         "AI = select,PROXY,香港节点,台湾节点,日本节点,新加坡节点,韩国节点,美国节点,policy-select-name=PROXY",
@@ -97,7 +132,7 @@ def patch_group(path: str) -> None:
     group = "\n".join([
         GROUP_START,
         "# Dedicated Apple Intelligence / ChatGPT egress.",
-        "# Intentionally pinned to the US node group for region-sensitive capability checks.",
+        "# Pinned to the US node group for region-sensitive capability checks.",
         "Apple Intelligence = select,美国节点,policy-select-name=美国节点",
         GROUP_END,
         "",
