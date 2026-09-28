@@ -160,7 +160,7 @@ def patch_group(path: str) -> None:
         GROUP_START,
         "# Dedicated Apple Intelligence / ChatGPT egress.",
         "# Prefer US full-stack / dual-stack nodes; automatically fall back to the normal US group.",
-        "美国全栈节点 = url-test,url=http://www.gstatic.com/generate_204,interval=300,tolerance=0,timeout=5,select=0,policy-regex-filter=(?=.*(🇺🇸|US|USA|America|america|United States|美国|洛杉矶|西雅图|芝加哥|纽约|美))(?=.*(全栈|双栈|Full.?Stack|full.?stack|Dual.?Stack|dual.?stack|IPv6|IPV6|ipv6|v6)).*$",
+        "美国全栈节点 = url-test,url=http://www.gstatic.com/generate_204,interval=300,tolerance=0,timeout=5,select=0,policy-regex-filter=美国.*IPv6.*双栈",
         "Apple Intelligence = fallback,美国全栈节点,美国节点,url=http://www.gstatic.com/generate_204,interval=300,timeout=5",
         GROUP_END,
         "",
