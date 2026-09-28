@@ -2,19 +2,19 @@
 
 ### 试更新公告
 
-由于原作者 [h2y](https://github.com/h2y) 已停止维护 [Shadowrocket-ADBlock-Rules](https://github.com/h2y/Shadowrocket-ADBlock-Rules)，Shadowrocket 再无划分如此细致精美的规则。因此我决定用自己有限的能力和技术对该项目以个人的理解进行更新与维护。**所有规则都会在每天北京时间 8:00 更新发布。**
+由于原作者 [h2y](https://github.com/h2y) 已停止维护 [Shadowrocket-ADBlock-Rules](https://github.com/h2y/Shadowrocket-ADBlock-Rules)，Shadowrocket 再无划分如此细致精美的规则。为了继续提供一份更适合当前使用场景的规则，后续我会持续维护本分支，并保留高质量的分流策略与广告过滤逻辑。
 
 ### 写在前面 —— 请保护好自己
 
-谷歌中英文的搜索体验都优于百度，而刷美剧、ins 追星、去推特看看特朗普也都挺有意思。但是，随着看到的人和事越多，我越发想要在这里说一些话，告诫路过的各位：
+谷歌中英文的搜索体验都优于百度，而刷美剧、ins 追星、去推特看看特朗普也都挺有意思。但是，随着看到的人和事越多，我越发想要在这里说一些不太想说但其实早就该说的话：自由的互联网不是无条件的，保护自己的上网隐私和健康习惯，比任何看似“高级”的技巧都重要。
 
-**请务必保护好自己** 我们自认为打破了信息的壁垒，其实打破的是保护我们的屏障。因为外网真的存在很多误导性言论，来自各个利益集团对中国网民疯狂洗脑，他们往往还喜欢以平等自由等旗号自称，但仔细想想真的是这样吗？我只知道美国是最善于运用舆论的国家，会结合大数据潜移默化地改变你的观念。如果大家在上网过程中不经意看到了某些观点，务必保留自己独立思考的能力，如果你是一个容易被带偏的人，则建议回到屏障之中。
+**请务必保护好自己** 我们自认为打破了信息的壁垒，其实打破的是保护我们的屏障。因为外网真的存在很多误导性言论，来自各个利益集团对中国人的误导和洗脑，越是熟悉网络世界，越要保持清醒。
 
 本规则只提供给大家用于更便捷地学习和工作。如果你是对上述观点持反对意见的极端政治人士，或者已被洗脑，请立即离开，本项目不对你开放。
 
 ------------------------------------------------------
 
-这里是一系列好用的Shadowrocket规则，针对 [Shadowrocket](https://liguangming.com/Shadowrocket) 开发，支持广告过滤。规则定义了哪些网站可以直连，哪些必须走代理，规则是一个纯文本文件，无法提供魔法上网功能。使用 Python 按照一定的规则和模板定期自动生成，并且使用开源的力量，集众人之力逐渐完善。
+这里是一系列好用的Shadowrocket规则，针对 [Shadowrocket](https://liguangming.com/Shadowrocket) 开发，支持广告过滤。规则定义了哪些网站可以直连，哪些必须走代理，哪些需要屏蔽，并且尽量兼容 iOS 上各种常见应用场景。
 
 **正在使用手机浏览本页面的用户 [请点击这里](https://tonylawx.github.io/Shadowrocket-ADBlock-Rules-Forever) ，查看完整的说明文档。**
 
@@ -29,7 +29,7 @@
 - 将 [Apple及其CDN域名](https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/apple.china.conf) 进行优化；
 - 方便的快捷指令与自动化联动，每天自动更新规则；
 - 增加使用代理组的懒人配置；
-- 由于世界排名 top 500 网站列表已无法通过无账户/免费方式取得，故原来的 top500 检测方法失效。我已根据旧的 top500 榜单重构了新的 top500 网站连接情况表。**同时，希望大家可以帮助 pull requests 一份最新的 top500 榜单: [格式](https://github.com/Johnshall/Shadowrocket-ADBlock-Rules-Forever/blob/build/factory/resultant/top500_manual.list)**
+- 由于世界排名 top 500 网站列表已无法通过无账户/免费方式取得，故原来的 top500 检测方法失效。我已根据旧的 top500 榜单重构了新的 top500 网站连接规则，并持续更新；
 - **所有发布的规则都会在每天北京时间 8:00 更新发布**
 
 
@@ -65,9 +65,10 @@
 
 ## 如何自动更新
 步骤一：安装[捷径](https://www.icloud.com/shortcuts/20bd590bc99e4ef0a157d2fe6e8c273d)，并填写规则文件地址；  
-步骤二：打开“快捷指令”下方的“自动化”，轻击右上角加号，点击“创建个人自动化”，选择“特定时间”，设定时间为 8:05 或更晚的时间（规则生成需要一定时间），点击下一步，点击添加操作，选择 APP 栏，找到快捷指令，选择“运行快捷指令”，点击浅色“快捷指令”，选择“Shadowrocket 规则自动更新”，点击下一步，关闭运行前询问（可选），点击完成即可。
+步骤二：打开“快捷指令”下方的“自动化”，轻击右上角加号，点击“创建个人自动化”，选择“特定时间”，设定时间为 8:05 或更晚的时间（规则会在 8:00 自动同步更新）；  
+步骤三：在“重复”里选择“每天”并勾选“有效”，完成自动更新。  
 
-如果出现无法正常跳转 Safari 对 google.cn 的请求的情况，请在每次更新后点击规则后方的ℹ️，点击 HTTPS 解密，将 HTTPS 解密关闭，返回，再开启，即可正常跳转。
+如果出现无法正常跳转 Safari 对 google.cn 的请求的情况，请在每次更新后点击规则后方的ℹ️，点击 HTTPS 解密，将 HTTPS 解密关闭，返回，再开启，即可修复该问题。
 
 ## 一些推荐的网站
 
@@ -94,14 +95,14 @@ INTP | Jack of all trades | I use Arch BTW
 
 > 不会的。
 >
-> 我之前也认为这是一个每次网络数据包经过都会执行一次的规则文件，逐行匹配规则，所以需要尽可能精简。但后来和 SR 作者交流后发现这是一个误区，SR 在每次加载规则时都会生成一棵搜索树，可以理解为对主机名从后往前的有限状态机 DFA，并不是逐行匹配，并且对每次的匹配结果还有个哈希缓存。
+> 我之前也认为这是一个每次网络数据包经过都会执行一次的规则文件，逐行匹配规则，所以需要尽可能精简。但后来和 SR 作者交流后发现这是一个被高度优化的匹配过程，规则数量变化不会带来数量级上的性能差异。
 >
 > 换句话说，2000 行的规则和 50 行的规则在 SR 中均为同一量级的时间复杂度 O(1)。
 
 
 - **你提供了这么多规则，如何选择适合我的？**
 
-> 最常用的规则是黑名单和白名单。区别在于对待 `未知网站` 的不同处理方式，黑名单默认直连，而白名单则默认使用代理。如果你选择恐惧症爆发，那就两个都下载好了，黑白名单切换使用，天下无忧。
+> 最常用的规则是黑名单和白名单。区别在于对待 `未知网站` 的不同处理方式，黑名单默认直连，而白名单则默认使用代理。如果你选择恐惧症爆发或者不想细琢磨规则本身，最稳妥的选择是直接用 `sr_adb.conf` 这种“全局比较平衡”的规则。
 
 - **你提供了这么多规则，却没有我想要的 o(>.<)o**
 
@@ -109,7 +110,7 @@ INTP | Jack of all trades | I use Arch BTW
 
 - **广告过滤不完全？**
 
-> 该规则并不保证 100% 过滤所有的广告，尤其是视频广告，与网页广告不同的是，优酷等 App 每次升级都有可能更换一次广告策略，因此难以保证其广告屏蔽的实时有效性。而油管广告则不能通过简单的 url 匹配实现完全去广告。
+> 该规则并不保证 100% 过滤所有的广告，尤其是视频广告，与网页广告不同的是，优酷等 App 每次升级都有可能更换一次广告策略，因此难以保证其准确性。
 
 - **外区 Apple Podcasts 无法正常加载** (感谢 [@jesuiseric](https://t.me/jesuiseric))
 
@@ -117,17 +118,17 @@ INTP | Jack of all trades | I use Arch BTW
 
 - **无法正常跳转 Safari 对 google.cn 的请求**
 
-> 轻击配置 -> 轻击本地文件中正在使用的规则文件后的ℹ️ -> HTTPS 解密 -> 将右上角开关启动 -> 安装证书 -> 允许 -> 打开系统设置 -> 已下载描述文件 -> 安装 -> 输入密码 -> 安装 -> 通用 -> 关于本机 -> 证书信任设置 -> 对刚刚安装的根证书完全信任 即可正常跳转。
+> 轻击配置 -> 轻击本地文件中正在使用的规则文件后的ℹ️ -> HTTPS 解密 -> 将右上角开关启动 -> 安装证书 -> 允许 -> 打开系统设置 -> 已下载描述文件 -> 安装 -> 继续打开 -> 关闭，再重新打开 Safari 即可。
 
 ## 问题反馈
 
-任何问题欢迎在 [Issues](https://github.com/Johnshall/Shadowrocket-ADBlock-Rules-Forever/issues) 中反馈。
+任何问题欢迎在 [Issues](https://github.com/tonylawx/Shadowrocket-ADBlock-Rules-Forever/issues) 中反馈。
 
 你的反馈会让此规则变得更加完美。
 
 **如何贡献代码？**
 
-通常的情况下，对 [factory 目录](https://github.com/Johnshall/Shadowrocket-ADBlock-Rules-Forever/tree/build/factory) 下的若干个 `manual_*.txt` 文件做对应修改即可。**Pull requests 请发送至 build 分支。**
+通常的情况下，对 [factory 目录](https://github.com/tonylawx/Shadowrocket-ADBlock-Rules-Forever/tree/build/factory) 下的若干个 `manual_*.txt` 文件做对应修改即可。**Pull Request** 也非常欢迎。
 
 ---
 
@@ -168,7 +169,7 @@ GitHub 出于安全考虑，fork 仓库的 workflow 默认**不会自动运行**
 
 ### 第五步：添加你自己的规则
 
-这是最核心的一步。编辑 [`factory/`](https://github.com/Johnshall/Shadowrocket-ADBlock-Rules-Forever/tree/build/factory) 目录下的 `manual_*.txt` 文件，把规则追加进去即可（可以直接在网页上编辑，也可以 clone 到本地改）。**不需要写规则类型前缀，构建脚本会自动判断。**
+这是最核心的一步。编辑 [`factory/`](https://github.com/tonylawx/Shadowrocket-ADBlock-Rules-Forever/tree/build/factory) 目录下的 `manual_*.txt` 文件，把规则追加进去即可。
 
 | 文件 | 规则会被应用为 | 适合放什么 |
 | --- | --- | --- |
@@ -181,8 +182,8 @@ GitHub 出于安全考虑，fork 仓库的 workflow 默认**不会自动运行**
 
 **关于 `Gemini` 策略组**（所有含代理规则的配置均已内置）：
 
-- Google 对 AI 接口（`generativelanguage.googleapis.com`、Antigravity 的 `daily-cloudcode-pa.googleapis.com` 等）的出口 IP 风控很严，普通节点常被拒；而**网页版** `gemini.google.com` 恰恰相反，家宽类普通节点没问题、美国机房 IP 反而容易被风控。因此 API 域名放 `manual_gemini.txt` 走专用组，网页版留在 `manual_proxy.txt` 走普通代理。
-- 策略组定义为 `url-test` + `policy-regex-filter=Gemini`：自动从你的订阅里筛出名称含 "Gemini" 的节点并选延迟最低的，**无需手动干预**。机场没有此类节点时，可在 Shadowrocket → 配置 → ℹ️ → 代理分组 中自行调整该组的筛选正则（改成 `美国|US` 等）。
+- Google 对 AI 接口（`generativelanguage.googleapis.com`、Antigravity 的 `daily-cloudcode-pa.googleapis.com` 等）的出口 IP 风控很严，普通节点常被拒；而**网页版** `gemini.google.com` 访问相对更稳定。
+- 策略组定义为 `url-test` + `policy-regex-filter=Gemini`：自动从你的订阅里筛出名称含 "Gemini" 的节点并选延迟最低的，**无需手动干预**。机场没有此类节点时，策略组会自动退化为主流节点。
 
 **书写格式（极简，脚本会自动识别）：**
 
@@ -198,7 +199,7 @@ google                 # 纯字母关键字 → 自动变 DOMAIN-KEYWORD,google
 
 ### 第六步：手动触发一次构建验证
 
-你的仓库 → **Actions** → *Build Shadowrocket Rules* → **Run workflow** → 选 `build` 分支 → 运行。等 1～2 分钟跑完变绿，说明你的规则已经生成到 `.conf` 文件里了。
+你的仓库 → **Actions** → *Build Shadowrocket Rules* → **Run workflow** → 选 `build` 分支 → 运行。等 1～2 分钟跑完变绿，说明你的规则已经生成到 `.conf` 文件中。
 
 ### 第七步：在 Shadowrocket 里导入你自己的规则
 
@@ -225,13 +226,13 @@ Shadowrocket → 配置 → 右上角 `+` → 粘贴上面的 URL → 类型选 
 
 ### 第八步（可选）：直接扫码导入 —— 二维码是自动生成的
 
-本仓库的构建流程**已经内置了二维码自动生成**：每次构建完成后，会对每个 `.conf` 规则文件生成一张订阅二维码 PNG，覆盖到 `figure/` 目录，并随构建一起提交。**这意味着你 Fork 之后，README 里那些二维码扫出来的就是你自己的规则地址，不用任何手动处理。**
+本仓库的构建流程**已经内置了二维码自动生成**：每次构建完成后，会对每个 `.conf` 规则文件生成一张订阅二维码 PNG，覆盖到 `figure/` 目录，并随构建结果提交，以便在 README 中直接展示。
 
 **工作原理：**
 
-构建流程里有一步 `Generate QR codes & update README URLs`（由 [`factory/generate_qr.py`](https://github.com/Johnshall/Shadowrocket-ADBlock-Rules-Forever/tree/build/factory/generate_qr.py) 完成），它会做两件事：
+构建流程里有一步 `Generate QR codes & update README URLs`（由 [`factory/generate_qr.py`](https://github.com/tonylawx/Shadowrocket-ADBlock-Rules-Forever/tree/build/factory/generate_qr.py) 控制）：
 
-1. **生成二维码**：对下列 13 个规则文件，各生成一张二维码 PNG，编码的订阅地址形如 `https://raw.githubusercontent.com/{你的用户名}/{仓库名}/build/{规则名}.conf`。其中 `{你的用户名}` 和 `{仓库名}` 是构建时从当前仓库**自动读取**的，所以 Fork 者无需改任何代码，二维码天然指向自己的仓库。
+1. **生成二维码**：对下列 13 个规则文件，各生成一张二维码 PNG，编码的订阅地址形如 `https://raw.githubusercontent.com/{你的用户名}/{仓库名}/build/{规则文件名}.conf`。
 
    | 二维码文件 | 对应规则 | 用途 |
    | --- | --- | --- |
@@ -247,20 +248,20 @@ Shadowrocket → 配置 → 右上角 `+` → 粘贴上面的 URL → 类型选 
 
    > `figure/guide.png`（规则选择指南示意图）和 `sr_adb.conf` 不会被自动处理——前者是说明图不是二维码，后者没有对应的 README 章节。
 
-2. **替换 README 里的地址**：把 README 中所有原作者的 `johnshall.github.io/Shadowrocket-ADBlock-Rules-Forever` 链接，替换成你自己的 `你的用户名.github.io/仓库名`。同时把二维码图片链接从绝对地址改成相对路径（`figure/xxx.png`），这样别人看你的 README 时，点规则地址、扫二维码都是指向**你**的仓库。
+2. **替换 README 里的地址**：把 README 中所有原作者的 `johnshall.github.io/Shadowrocket-ADBlock-Rules-Forever` 链接，替换成你自己的 `你的用户名.github.io/仓库名` 地址，并同步更新 QR 码导入说明。
 
 **怎么扫码导入：**
 
-- **方式一（推荐）**：打开你 Fork 仓库的 README 页面（`https://github.com/你的用户名/Shadowrocket-ADBlock-Rules-Forever`），滚到对应规则章节，直接用 Shadowrocket 扫描那张二维码。
+- **方式一（推荐）**：打开你 Fork 仓库的 README 页面（`https://github.com/你的用户名/Shadowrocket-ADBlock-Rules-Forever`），滚到对应规则章节，直接用 Shadowrocket 扫码即可。
 - **方式二**：单独打开某张二维码图片，例如：
   ```
   https://github.com/你的用户名/Shadowrocket-ADBlock-Rules-Forever/raw/build/figure/sr_ad_only.png
   ```
   手机显示这张图，再用 Shadowrocket 扫码。
 
-> 💡 二维码里编码的是 `raw.githubusercontent.com` 直链（不依赖 GitHub Pages，永远可用）。每次构建后二维码内容会跟着更新——但因为你的订阅地址是固定的，**Shadowrocket 里只需配置/扫码一次，以后每次构建自动刷新内容**，无需重新导入。
+> 💡 二维码里编码的是 `raw.githubusercontent.com` 直链（不依赖 GitHub Pages，永远可用）。每次构建后二维码内容会跟着更新——但因为你的订阅地址是直接使用 GitHub Pages，所以你仍然需要确保 Pages 已开启。
 
-> ⚠️ **关于 GitHub Pages**：替换后的 README 规则地址用的是 `你的用户名.github.io/仓库名` 形式。如果你没有在仓库 Settings → Pages 里开启 Pages 服务，这个文字地址会 404；但这**不影响扫码导入**（二维码用的是 raw 直链）。需要文字链接也可点的话，去 Settings → Pages 把 Source 设为 `build` 分支即可。
+> ⚠️ **关于 GitHub Pages**：替换后的 README 规则地址用的是 `你的用户名.github.io/仓库名` 形式。如果你没有在仓库 Settings → Pages 里开启 Pages 服务，会直接返回 404；扫码导入不受影响。
 
 ### 日常维护
 
@@ -292,7 +293,7 @@ Shadowrocket → 配置 → 右上角 `+` → 粘贴上面的 URL → 类型选 
 
 本项目不接受任何形式的捐助，因为自由地上网本来就是大家的权利，没有必要为此付出更多的代价。
 
-但是，作为一个翻墙规则，不可避免的会对网站有所遗漏，需要大家来共同完善，当发现不好用的地方时，请打开 SR 的日志功能，检查一下是哪一个被墙的域名走了直连，或者是哪一个可以直连的域名走了代理。
+但是，作为一个翻墙规则，不可避免的会对网站有所遗漏，需要大家来共同完善，当发现不好用的地方时，请打开 SR 的日志功能，检查一下是哪一条规则有问题，或者哪些网站没有被覆盖到。
 
 将需要修改的信息反馈给我，大家的努力会让这个规则越来越完善！
 
@@ -479,4 +480,4 @@ Shadowrocket → 配置 → 右上角 `+` → 粘贴上面的 URL → 类型选 
 
 ## Stargazers over time
 
-[![Stargazers over time](https://starchart.cc/Johnshall/Shadowrocket-ADBlock-Rules-Forever.svg)](https://starchart.cc/Johnshall/Shadowrocket-ADBlock-Rules-Forever)
+[![Stargazers over time](https://starchart.cc/tonylawx/Shadowrocket-ADBlock-Rules-Forever.svg)](https://starchart.cc/tonylawx/Shadowrocket-ADBlock-Rules-Forever)
