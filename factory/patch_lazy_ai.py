@@ -14,6 +14,9 @@ APPLE_RULES = [
     "DOMAIN,guzzoni.apple.com,{policy}",
     "DOMAIN,identity.apple.com,{policy}",
     "DOMAIN,appleid.cdn-apple.com,{policy}",
+    "DOMAIN,gsa.apple.com,{policy}",
+    "DOMAIN,setup.icloud.com,{policy}",
+    "DOMAIN-SUFFIX,acsegateway.icloud.com,{policy}",
 
     # Apple Intelligence / Private Cloud Compute / relay path
     "DOMAIN,mask-api.fe.apple-dns.net,{policy}",
@@ -40,6 +43,13 @@ APPLE_RULES = [
     "DOMAIN-SUFFIX,apple-cloudkit.com,{policy}",
     "DOMAIN-SUFFIX,apps.mzstatic.com,{policy}",
     "DOMAIN-SUFFIX,aapps.mzstatic.com,{policy}",
+
+    # Catch Apple Intelligence traffic that arrives as raw Apple IPs on Wi-Fi.
+    "IP-CIDR,17.0.0.0/8,{policy},no-resolve",
+    "IP-CIDR6,2403:300:a42::/48,{policy},no-resolve",
+    "IP-CIDR6,2403:300:a51::/48,{policy},no-resolve",
+    "IP-CIDR6,2620:149:a44::/48,{policy},no-resolve",
+    "IP-CIDR6,2a01:b740:a42::/48,{policy},no-resolve",
 ]
 
 OPENAI_RULES = [
@@ -112,6 +122,23 @@ def patch_rules(path: str, policy: str) -> None:
     p.write_text(text, encoding="utf-8")
 
 
+def patch_network_path(path: str) -> None:
+    """Avoid Wi-Fi IPv6/system-DNS paths bypassing the region-sensitive proxy rules."""
+    p = Path(path)
+    text = p.read_text(encoding="utf-8")
+
+    # Force IPv4 while troubleshooting Apple Intelligence on mainland Wi-Fi.
+    text, count = re.subn(r"^ipv6\s*=\s*true\s*$", "ipv6 = false", text, count=1, flags=re.MULTILINE)
+    if count == 0 and "ipv6 = false" not in text:
+        raise RuntimeError(f"{path}: ipv6 setting not found")
+
+    # Do not force Apple/iCloud names back to the local ISP resolver.
+    text = re.sub(r"^\*\.apple\.com\s*=\s*server:system\s*\n?", "", text, flags=re.MULTILINE)
+    text = re.sub(r"^\*\.icloud\.com\s*=\s*server:system\s*\n?", "", text, flags=re.MULTILINE)
+
+    p.write_text(text, encoding="utf-8")
+
+
 def patch_group(path: str) -> None:
     p = Path(path)
     text = p.read_text(encoding="utf-8")
@@ -143,4 +170,6 @@ def patch_group(path: str) -> None:
 
 patch_rules("lazy.conf", "PROXY")
 patch_rules("lazy_group.conf", "Apple Intelligence")
+patch_network_path("lazy.conf")
+patch_network_path("lazy_group.conf")
 patch_group("lazy_group.conf")
