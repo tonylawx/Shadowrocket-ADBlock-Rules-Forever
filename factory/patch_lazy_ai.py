@@ -26,6 +26,8 @@ APPLE_RULES = [
     "DOMAIN-SUFFIX,mask-h2.icloud.com,{policy}",
     "DOMAIN-SUFFIX,mask.icloud.com,{policy}",
     "DOMAIN-SUFFIX,apple-relay.apple.com,{policy}",
+    # Official Apple Private Cloud Compute endpoint.
+    "DOMAIN,cp4.cloudflare.com,{policy}",
     "DOMAIN-SUFFIX,apple-relay.fastly-edge.com,{policy}",
     "DOMAIN-SUFFIX,apple-relay.cloudflare.com,{policy}",
     "DOMAIN-SUFFIX,apple-relay.akamaized.net,{policy}",
@@ -37,6 +39,8 @@ APPLE_RULES = [
     "DOMAIN,seed-sequoia.siri.apple.com,{policy}",
     "DOMAIN,gspe1-ssl.ls.apple.com,{policy}",
     "DOMAIN-SUFFIX,smoot.apple.com,{policy}",
+    # Observed Apple Intelligence extension login request in rule-mode case reports.
+    "DOMAIN,amp-api.apps.apple.com,{policy}",
     "DOMAIN-KEYWORD,siri,{policy}",
     "DOMAIN-SUFFIX,apple-cloudkit.com,{policy}",
 ]
