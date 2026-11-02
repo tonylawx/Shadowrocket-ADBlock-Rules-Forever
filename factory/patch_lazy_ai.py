@@ -32,24 +32,13 @@ APPLE_RULES = [
     "DOMAIN-SUFFIX,apple-relay.mask.apple-dns.net,{policy}",
     "DOMAIN-KEYWORD,apple-relay,{policy}",
 
-    # Siri / location capability checks used before ChatGPT hand-off
-    "DOMAIN-SUFFIX,cp4.cloudflare.com,{policy}",
-    "DOMAIN-SUFFIX,gspe1-ssl.ls.apple.com,{policy}",
-    "DOMAIN-SUFFIX,ls.apple.com,{policy}",
+    # Route Siri/AI endpoints, not every Apple IP or unrelated CDN request.
+    "DOMAIN-SUFFIX,sequoia.apple.com,{policy}",
+    "DOMAIN,seed-sequoia.siri.apple.com,{policy}",
+    "DOMAIN,gspe1-ssl.ls.apple.com,{policy}",
     "DOMAIN-SUFFIX,smoot.apple.com,{policy}",
     "DOMAIN-KEYWORD,siri,{policy}",
-
-    # Apple Intelligence resources / CloudKit
     "DOMAIN-SUFFIX,apple-cloudkit.com,{policy}",
-    "DOMAIN-SUFFIX,apps.mzstatic.com,{policy}",
-    "DOMAIN-SUFFIX,aapps.mzstatic.com,{policy}",
-
-    # Catch Apple Intelligence traffic that arrives as raw Apple IPs on Wi-Fi.
-    "IP-CIDR,17.0.0.0/8,{policy},no-resolve",
-    "IP-CIDR6,2403:300:a42::/48,{policy},no-resolve",
-    "IP-CIDR6,2403:300:a51::/48,{policy},no-resolve",
-    "IP-CIDR6,2620:149:a44::/48,{policy},no-resolve",
-    "IP-CIDR6,2a01:b740:a42::/48,{policy},no-resolve",
 ]
 
 OPENAI_RULES = [
@@ -123,21 +112,26 @@ def patch_rules(path: str, policy: str) -> None:
 
 
 def patch_network_path(path: str) -> None:
-    """Avoid Wi-Fi IPv6/system-DNS paths bypassing the region-sensitive proxy rules."""
+    """Ensure Siri names are eligible for proxy rules without changing domestic DNS."""
     p = Path(path)
     text = p.read_text(encoding="utf-8")
 
-    # Force IPv4 while troubleshooting Apple Intelligence on mainland Wi-Fi.
     text, count = re.subn(r"^ipv6\s*=\s*true\s*$", "ipv6 = false", text, count=1, flags=re.MULTILINE)
-    if count == 0 and "ipv6 = false" not in text:
+    if count == 0 and not re.search(r"^ipv6\s*=\s*false\s*$", text, flags=re.MULTILINE):
         raise RuntimeError(f"{path}: ipv6 setting not found")
 
-    # Do not force Apple/iCloud names back to the local ISP resolver.
+    # Remove upstream skip-proxy conflicts if future lazy profiles introduce them.
+    excluded = {"sequoia.apple.com", "seed-sequoia.siri.apple.com", "*.ls.apple.com"}
+
+    def prune_skip_proxy(match: re.Match[str]) -> str:
+        items = [item.strip() for item in match.group(2).split(",")]
+        return match.group(1) + ",".join(item for item in items if item and item.lower() not in excluded)
+
+    text = re.sub(r"^(skip-proxy\s*=\s*)([^\r\n]*)$", prune_skip_proxy, text, flags=re.MULTILINE)
+
     text = re.sub(r"^\*\.apple\.com\s*=\s*server:system\s*\n?", "", text, flags=re.MULTILINE)
     text = re.sub(r"^\*\.icloud\.com\s*=\s*server:system\s*\n?", "", text, flags=re.MULTILINE)
-
     p.write_text(text, encoding="utf-8")
-
 
 def patch_group(path: str) -> None:
     p = Path(path)
@@ -158,10 +152,10 @@ def patch_group(path: str) -> None:
 
     group = "\n".join([
         GROUP_START,
-        "# Dedicated Apple Intelligence / ChatGPT egress.",
-        "# Prefer US full-stack / dual-stack nodes; automatically fall back to the normal US group.",
-        "美国全栈节点 = url-test,url=http://www.gstatic.com/generate_204,interval=300,tolerance=0,timeout=5,select=0,policy-regex-filter=美国.*IPv6.*双栈",
-        "Apple Intelligence = fallback,美国全栈节点,美国节点,url=http://www.gstatic.com/generate_204,interval=300,timeout=5",
+        "# Dedicated US exit; do not silently use a Hong Kong default proxy.",
+        "# US node pool is selected by default; full-stack pool remains an optional choice.",
+        "美国全栈节点 = url-test,url=http://www.gstatic.com/generate_204,interval=300,tolerance=0,timeout=5,select=0,policy-regex-filter=(?=.*(🇺🇸|美国|USA|US|United States))(?=.*(IPv6|双栈|dual|Dual)).*",
+        "Apple Intelligence = select,美国节点,美国全栈节点,policy-select-name=美国节点",
         GROUP_END,
         "",
     ])
