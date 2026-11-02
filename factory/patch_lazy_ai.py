@@ -152,10 +152,10 @@ def patch_group(path: str) -> None:
 
     group = "\n".join([
         GROUP_START,
-        "# Dedicated US exit; do not silently use a Hong Kong default proxy.",
-        "# US node pool is selected by default; full-stack pool remains an optional choice.",
+        "# Use the homepage-selected proxy first, matching Global Proxy mode for troubleshooting.",
+        "# Auto-tested US node pools are optional; they can select a different exit.",
         "美国全栈节点 = url-test,url=http://www.gstatic.com/generate_204,interval=300,tolerance=0,timeout=5,select=0,policy-regex-filter=(?=.*(🇺🇸|美国|USA|US|United States))(?=.*(IPv6|双栈|dual|Dual)).*",
-        "Apple Intelligence = select,美国节点,美国全栈节点,policy-select-name=美国节点",
+        "Apple Intelligence = select,PROXY,美国节点,美国全栈节点,policy-select-name=PROXY",
         GROUP_END,
         "",
     ])
